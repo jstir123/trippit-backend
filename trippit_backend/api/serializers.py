@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import UserProfile, Trip, TripPicture, TripItinerary
 from rest_framework import serializers
 
 
@@ -7,6 +7,28 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['bio', 'profilePicURL']
+
+class TripSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Trip
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.description = validated_data.get('description', instance.description)
+        instance.startDate = validated_data.get('startDate', instance.startDate)
+        instance.endDate = validated_data.get('endDate', instance.endDate)
+        instance.save()
+        return instance
+
+class TripPictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TripPicture
+        fields = '__all__'
+
+class TripItinerarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TripItinerary
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(required=False)

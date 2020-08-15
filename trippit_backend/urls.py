@@ -23,6 +23,8 @@ router.register(r'users', views.UserViewset)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('trips/', views.AddTrip.as_view()),
+    path('trips/<int:pk>/', views.TripDetail.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls)
 ]

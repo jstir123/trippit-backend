@@ -16,8 +16,8 @@ class Trip(models.Model):
     lat = models.FloatField(blank=False)
     lon = models.FloatField(blank=False)
     description = models.TextField(null=True, blank=True)
-    startDate = models.DateField(blank=True)
-    endDate = models.DateField(blank=True)
+    startDate = models.DateField(null=True, blank=True)
+    endDate = models.DateField(null=True, blank=True)
     loggedAt = models.DateField(auto_now_add=True)
 
 class TripPicture(models.Model):
