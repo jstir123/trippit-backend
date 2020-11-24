@@ -72,3 +72,14 @@ class TripDetail(APIView):
         trip = self.get_object(pk=pk)
         trip.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class ItineraryView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        serializer = TripItinerarySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -8,18 +8,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ['bio', 'profilePicURL']
 
-class TripSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Trip
-        fields = '__all__'
-
-    def update(self, instance, validated_data):
-        instance.description = validated_data.get('description', instance.description)
-        instance.startDate = validated_data.get('startDate', instance.startDate)
-        instance.endDate = validated_data.get('endDate', instance.endDate)
-        instance.save()
-        return instance
-
 class TripPictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = TripPicture
@@ -29,6 +17,22 @@ class TripItinerarySerializer(serializers.ModelSerializer):
     class Meta:
         model = TripItinerary
         fields = '__all__'
+
+class TripSerializer(serializers.ModelSerializer):
+    pictures = TripPictureSerializer(many=True, read_only=True)
+    itinerary = TripItinerarySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Trip
+        fields = ['user', 'location', 'city', 'state', 'country', 'lat', 'lon', 'description',
+                  'startDate', 'endDate', 'loggedAt', 'pictures', 'itinerary']
+
+    def update(self, instance, validated_data):
+        instance.description = validated_data.get('description', instance.description)
+        instance.startDate = validated_data.get('startDate', instance.startDate)
+        instance.endDate = validated_data.get('endDate', instance.endDate)
+        instance.save()
+        return instance
 
 class UserSerializer(serializers.ModelSerializer):
     profile = UserProfileSerializer(required=False)
