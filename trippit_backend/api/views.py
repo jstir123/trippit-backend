@@ -94,3 +94,35 @@ class ItineraryView(APIView):
         item = self.get_object(pk=pk)
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class TripPictureView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self, pk):
+        try:
+            return TripPicture.objects.get(pk=pk)
+        except TripPicture.DoesNotExist:
+            raise Http404
+
+    def post(self, request):
+        data = request.data
+        tripId = data['tripId']
+        urls = data.get('urls', [])
+        pictures = []
+        
+        for u in urls:
+            name = u.get('name', None)
+            url = u.get('url', None)
+            picture = {'trip': tripId, 'name': name, 'url':url}
+            pictures.append(picture)
+
+        serializer = TripPictureSerializer(data=pictures, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        item = self.get_object(pk=pk)
+        item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

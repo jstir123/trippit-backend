@@ -27,6 +27,8 @@ urlpatterns = [
     path('trips/<int:pk>/', views.TripDetail.as_view()),
     path('itinerary/', views.ItineraryView.as_view()),
     path('itinerary/<int:pk>/', views.ItineraryView.as_view()),
+    path('trip-picture/', views.TripPictureView.as_view()),
+    path('trip-picture/<int:pk>/', views.TripPictureView.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls)
 ]
