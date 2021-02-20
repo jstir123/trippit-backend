@@ -13,19 +13,6 @@ class TripPictureSerializer(serializers.ModelSerializer):
         model = TripPicture
         fields = '__all__'
 
-    # def create(self, validated_data):
-    #     pictures = []
-    #     urls = validated_data.get('urls', [])
-    #     tripId = validated_data['tripId']
-
-    #     for u in urls:
-    #         name = u.get('name', None)
-    #         url = u.get('url', None)
-    #         picture = TripPicture.objects.create(tripId=tripId, name=name, url=url)
-    #         pictures.append(picture)
-
-    #     return pictures
-
 class TripItinerarySerializer(serializers.ModelSerializer):
     class Meta:
         model = TripItinerary
